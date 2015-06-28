@@ -139,5 +139,15 @@ namespace Tictactoe
             MessageBox.Show("By Team Active X", "About");
         }
 
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel1_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
+
     }
 }
