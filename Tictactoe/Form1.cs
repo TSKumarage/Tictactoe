@@ -115,7 +115,8 @@ namespace Tictactoe
         }
         private void Clear_Board() {
             try {
-                foreach (Control c in Controls) {
+                foreach (Control c in this.Controls.OfType<Button>()) {
+                    
                     Button b = (Button)c;
                     b.Text = "";
                     b.Enabled = true;
