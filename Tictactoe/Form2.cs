@@ -16,6 +16,7 @@ namespace Tictactoe
         public Form2()
         {
             InitializeComponent();
+            CenterToScreen();
         }
         private int player=1;
         private int steps = 0;
@@ -147,6 +148,11 @@ namespace Tictactoe
         }
 
         private void tableLayoutPanel1_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void Form2_Load_1(object sender, EventArgs e)
         {
 
         }

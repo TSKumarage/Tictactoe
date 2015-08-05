@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,57 +14,115 @@ namespace Tictactoe
     public partial class Form1 : Form
     {
         private ComputeMove Computer;
+        private String player;
         private int steps;
+        private int check ;
+        private String level = "esay";
+        CDBC css =new CDBC();
         public Form1()
         {
             InitializeComponent();
+            CenterToScreen();
             Init();
+            
+            lbl_player.BackColor = System.Drawing.Color.Transparent;
+            lbl_computer.BackColor = System.Drawing.Color.Transparent;
+            pb_computer.BackColor = System.Drawing.Color.Transparent;
+            pb_player.BackColor = System.Drawing.Color.Transparent;
+            pb.BackColor = System.Drawing.Color.Transparent;
+            pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            pictureBox2.BackColor = System.Drawing.Color.Transparent;
+            label1.BackColor = System.Drawing.Color.Transparent;
+            label2.BackColor = System.Drawing.Color.Transparent;
+            label3.BackColor = System.Drawing.Color.Transparent;
+            label4.BackColor = System.Drawing.Color.Transparent;
+            label5.BackColor = System.Drawing.Color.Transparent;
+            pb.Visible = false;
+            label1.Visible = false;
+            pictureBox1.Visible = false;
+            pictureBox2.Visible = false;
+            label4.Visible = false;
+            label5.Visible = false;
+
+        }
+     
+        public void setCheck(int i)
+        {
+            check = i;
+        }
+        public void setName(String name)
+        {
+            player = name;
+            lbl_player.Text = name;
         }
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
+
         public void Init()
         {
             Computer = new ComputeMove();
             steps = 0;
+            Console.WriteLine(check);
+            if (check == 0)
+            {
+                Computer.Compute(level);
+                Computer.play(Computer.get_computersMove(), 1);
+                set_play(Computer.get_computersMove());
+                steps = 1;
+                label2.Text="X";
+                label3.Text="O";
+            }
+            
         }
-       
-        
-      
+
+        public void userWon()
+        {
+            pb.Visible = true;
+            label1.Visible = true;
+            pictureBox1.Visible = true;
+            pictureBox2.Visible = true;
+            label4.Visible = true;
+            label5.Visible = true;
+        }
+
         private void Button_Click(object sender, EventArgs e)
         {
 
             Button b = (Button)sender;
             b.Enabled = false;
-            steps+=2;
+            steps += 2;
             b.Text = "X";
             Char x = b.Name[0];
             Char y = b.Name[1];
-            Computer.play(new Square(x-65, y-49), 2);
+            Computer.play(new Square(x - 65, y - 49), 2);
             //Boolean check=(Computer.hasOWon()||Computer.hasXWon());
             Boolean check = Winner_Check();
             if (!check)
             {
-                if (steps > 9)
+                if (steps >= 9)
                 {
                     MessageBox.Show("Game draw!!");
+                    css.Update(player,0);
                     Clear_Board();
                     Init();
 
                 }
                 else
                 {
-                    Computer.Compute("Medium");
+                    Computer.Compute(level);
                     Computer.play(Computer.get_computersMove(), 1);
                     set_play(Computer.get_computersMove());
                     Winner_Check();
+                    
 
                 }
 
 
             }
-            else { 
+            else
+            {
 
             }
 
@@ -133,7 +192,10 @@ namespace Tictactoe
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Clear_Board();
+            this.Visible = false;
+            Form3 frm = new Form3();
+            frm.Show();
+           
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -141,63 +203,62 @@ namespace Tictactoe
             MessageBox.Show("By Team Active X", "About");
         }
 
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        public void setLevel(String level)
         {
-
-        }
-
-        private void tableLayoutPanel1_Paint_1(object sender, PaintEventArgs e)
-        {
-
+            this.level = level;
         }
         // Game Logic
-       
+
         private Boolean Winner_Check()
         {
-            if (A1.Text == A2.Text && A2.Text == A3.Text&&A1.Text!="")
+            if (A1.Text == A2.Text && A2.Text == A3.Text && A1.Text != "")
             {
                 Show_Winner(A1, A2, A3);
                 return true;
             }
-            else if (B1.Text == B2.Text && B2.Text == B3.Text&&B1.Text!="")
+            else if (B1.Text == B2.Text && B2.Text == B3.Text && B1.Text != "")
             {
                 Show_Winner(B1, B2, B3);
                 return true;
             }
-            else if (C1.Text == C2.Text && C2.Text == C3.Text&&C1.Text!="")
+            else if (C1.Text == C2.Text && C2.Text == C3.Text && C1.Text != "")
             {
                 Show_Winner(C1, C2, C3);
                 return true;
             }
-            else if (A1.Text == B1.Text && B1.Text == C1.Text&&A1.Text!="")
+            else if (A1.Text == B1.Text && B1.Text == C1.Text && A1.Text != "")
             {
                 Show_Winner(A1, B1, C1);
                 return true;
             }
-            else if (A2.Text == B2.Text && B2.Text == C2.Text&&A2.Text!="")
+            else if (A2.Text == B2.Text && B2.Text == C2.Text && A2.Text != "")
             {
                 Show_Winner(A2, B2, C2);
                 return true;
             }
-            else if (A3.Text == B3.Text && B3.Text == C3.Text&&A3.Text!="")
+            else if (A3.Text == B3.Text && B3.Text == C3.Text && A3.Text != "")
             {
                 Show_Winner(A3, B3, C3);
                 return true;
             }
-            else if (A1.Text == B2.Text && B2.Text == C3.Text&&A1.Text!="")
+            else if (A1.Text == B2.Text && B2.Text == C3.Text && A1.Text != "")
             {
                 Show_Winner(A1, B2, C3);
                 return true;
             }
-            else if (A3.Text == B2.Text && B2.Text == C1.Text&&A3.Text!="")
+            else if (A3.Text == B2.Text && B2.Text == C1.Text && A3.Text != "")
             {
                 Show_Winner(A3, B2, C1);
                 return true;
             }
             return false;
         }
+        public async Task waiter()
+        {
+            await Task.Delay(1000);
 
-        private void Show_Winner(Button b1, Button b2, Button b3)
+        }
+        private async void Show_Winner(Button b1, Button b2, Button b3)
         {
             if (b1.Text == "X" || b1.Text == "O")
             {
@@ -208,11 +269,14 @@ namespace Tictactoe
 
                 if (b1.Text == "X")
                 {
-                    MessageBox.Show("X wins !!", "Tic Tac Toe");
+                    await waiter();
+                    userWon();
                 }
                 else
                 {
-                    MessageBox.Show("O wins !!", "Tic Tac Toe");
+                    await waiter();
+                    userWon();
+
                 }
                 b1.BackColor = Color.Azure;
 
@@ -240,7 +304,35 @@ namespace Tictactoe
             catch (Exception) { }
         }
 
-       
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            pictureBox1.Visible = false;
+            pictureBox2.Visible = false;
+            pb.Visible = false;
+            label1.Visible = false;
+            label4.Visible = false;
+            label5.Visible = false;
+        }
+
+        private void highScoreToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form4 frm = new Form4(player);
+            frm.setName(player);
+            frm.Show();
+        }
+
+
+
         /*private int player=1;
         private int steps = 0;
 
@@ -376,5 +468,5 @@ namespace Tictactoe
         }
         */
     }
-         
+
 }
