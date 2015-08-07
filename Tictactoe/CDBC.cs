@@ -93,13 +93,13 @@ namespace Tictactoe
                 MySqlDataReader datar = Select(query);
                // MySqlCommand cmd = new MySqlCommand();
                 String name = query;
-                MySqlCommand cmd =new MySqlCommand("UPDATE statics SET draw = @add,times=@time Where name = @fn",connection);
+                MySqlCommand cmd =new MySqlCommand("UPDATE statics SET draw = @add, times=@times Where name = @fn",connection);
               
                 int a = datar.GetInt16("draw") + 1;
                 int b = datar.GetInt16("times") + 1;
                 datar.Close();
                 cmd.Parameters.AddWithValue("@fn", name);
-                cmd.Parameters.AddWithValue("@time", b.ToString());
+                cmd.Parameters.AddWithValue("@times", b.ToString());
                 cmd.Parameters.AddWithValue("@add", a.ToString());
                 cmd.ExecuteNonQuery();
                 
@@ -109,12 +109,12 @@ namespace Tictactoe
                 MySqlDataReader datar = Select(query);
                
                 String name = query;
-                MySqlCommand cmd = new MySqlCommand("UPDATE statics SET win = @add,times=@time Where name = @fn", connection);
+                MySqlCommand cmd = new MySqlCommand("UPDATE statics SET win = @add, times=@times Where name = @fn", connection);
                 int a = datar.GetInt16("win") + 1;
                 int b = datar.GetInt16("times") + 1;
                 datar.Close();
                 cmd.Parameters.AddWithValue("@fn", name);
-                cmd.Parameters.AddWithValue("@time", b.ToString());
+                cmd.Parameters.AddWithValue("@times", b.ToString());
                 cmd.Parameters.AddWithValue("@add", a.ToString());
                 cmd.ExecuteNonQuery();
             }
@@ -122,14 +122,14 @@ namespace Tictactoe
             {
                 MySqlDataReader datar = Select(query);
       
-                MySqlCommand cmd = new MySqlCommand("UPDATE statics SET loss =@add,times=@time Where name = @fn", connection);
+                MySqlCommand cmd = new MySqlCommand("UPDATE statics SET loss =@add, times=@times Where name = @fn", connection);
                 String name = query;
                 int a = datar.GetInt16("loss") + 1;
                 int b = datar.GetInt16("times") + 1;
                 datar.Close();
                 cmd.CommandText = "UPDATE statics SET loss =@add Where name = @fn";
                 cmd.Parameters.AddWithValue("@fn", name);
-                cmd.Parameters.AddWithValue("@time", b.ToString());
+                cmd.Parameters.AddWithValue("@times", b.ToString());
                 cmd.Parameters.AddWithValue("@add", a.ToString());
                 cmd.ExecuteNonQuery();
             }
